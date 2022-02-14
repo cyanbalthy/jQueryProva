@@ -1,0 +1,4 @@
+.space_align {
+  display: flex;
+  justify-content: space-between;
+}
