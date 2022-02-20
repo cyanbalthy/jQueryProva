@@ -1,34 +1,88 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>parappa the rapper</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</head>
-<body>
-    
-<div class="space_align">
-    <div style="align:left"><h1>Dipendenti</h1></div>
-    <div style="align:right"><button type="button" class="btn btn-success">Aggiungi</button></div>
-</div>
-<br>
-    
-<table class="table">
-    <tr>   
-        <thead>
-            <td>Id</td>
-            <td>Nome</td>
-            <td>Cognome</td>
-            <td>Azioni</td>
-        </thead>
-        <tbody>
+    <head>
+        <title>parappa the rapper</title>
+        <link rel="stylesheet" href="css/style.css">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        
+        <script src="./provuery.js"></script>
+        
+    </head>
+    <body>
+        
+        <div class="container">
+            <div class="space_align">
+                    <h2>Dipendenti</h2>
+                    <button type="button" class="btn btn-success" onclick="document.getElementById('id01').style.display='block'">Aggiungi</button>
 
-        </tbody>
-    </tr>
-</table>
+            </div>
+            
+            <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Nome</td>
+                            <td>Cognome</td>
+                            <td>Azioni</td>
+                        </tr>
+                    </thead>
+                    <tbody id="riempi-tab">
+                    </tbody>
+            </table>
+        </div>
+        
+        <div class="w3-container">
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content">
+                    <header class="w3-container w3-teal"> 
+                        <span onclick="document.getElementById('id01').style.display='none'" 
+                              class="w3-button w3-display-topright">&times;</span>
+                        <h2>Inserisci dipendente</h2>
+                    </header>
+                    <div class="w3-container">
+                        <table class="modal-table">
+                            <tbody class="modal-body">
+                                <tr>
+                                    <td><label>Nome</label></td>
+                                    <td><input type="text" id="name"></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Cognome</label></td>
+                                    <td><input type="text" id="lastname"></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Data di nascita</label></td>
+                                    <td><input type="date" id="birthday"></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Data di assunzione</label></td>
+                                    <td><input type="date" id="hiring-date"></td>
+                                </tr>
+                                <tr class="radio-row">
+                                    <td><label>Sesso</label></td>
+                                    <td class="radio-container">
+                                        <input type="radio" name="gender" id="gender" value="M" class="m-radio" checked>
+                                        <input type="radio" name="gender" id="gender" value="F" class="f-radio">
+                                    </td>
+                                </tr>
+                                <tr>
+                                </tr>
+                                <td colspan="2" class=""radio-container><button class="modal-button" onclick="saveModalInputs(); emptyModalInputs();">Invia &gg;</button></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+  
 
-
-
-</body>
+    </body>
 </html>
