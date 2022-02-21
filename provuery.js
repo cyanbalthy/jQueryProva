@@ -104,3 +104,33 @@ var data = [
               $("#birthday").val("");
               $("#hiring-date").val("");
             }
+
+            function modifyEmployee(id){
+              let i = 0;
+              $.each(data, function(key, value){
+                if(value.id == id){
+                  let f=value.id;
+                  data.splice(i, 1);
+                  data.push({
+                    "id": nextId,
+                    "birthDate": birth,
+                    "firstName": $("#name").val().trim(),
+                    "lastName": $("#lastname").val().trim(),
+                    "gender": gender,
+                    "hireDate": hiredate,
+                  })
+                }
+                i++;
+              })
+            }
+
+            /*function saveModifiedModalInputs(){
+              addEmployee(
+                $("#name").val().trim(),
+                $("#lastname").val().trim(),
+                $("#birthday").val(),
+                $("#hiring-date").val(),
+                $("#gender").val()
+              );
+              updateEmployees();
+            }*/
