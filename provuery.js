@@ -1,4 +1,4 @@
-var data = /*$.ajax(method:"get", http://localhost:8080/swagger-ui.html, dataType:"json")*/[
+/*var data = /*$.ajax(method:"get", http://localhost:8080/swagger-ui.html, dataType:"json")*/[
                   {
                     "id": 10001,
                     "birthDate": "1953-09-01",
@@ -41,9 +41,15 @@ var data = /*$.ajax(method:"get", http://localhost:8080/swagger-ui.html, dataTyp
                     "hireDate": "1989-09-11T22:00:00.000+0000",
 
                   }
-                ];
-            var nextId = 10006;
+                ];*/
+            //var nextId = 10006;
             
+            var nextId;
+            function updateNextId(){
+              $.get(lastPage, function(values,status){
+                nextId = values._embedded.employees[countProps(values._embedded.employees)-1].id + 1;
+              });
+            }
 
             function updateEmployees() {
             var rows = "";
@@ -97,8 +103,76 @@ var data = /*$.ajax(method:"get", http://localhost:8080/swagger-ui.html, dataTyp
               updateEmployees();
             }
 
+            var nextPage;
+            var previousPage;
+            var lastPage;
+            var selfPage;
+            var firstPage = "http://localhost:8080/employees";
+
+            function loadFirstPage(){
+              $.get(firstPage, function(values,status){
+
+                lastPage = values._links.last.href;
+                nextPage = values._links.next.href;
+                selfPage = firstPage;
+                previousPage = selfPage;
+
+                data = values._embedded.employees;
+                updatePageNumber(values.page.number);
+                updateEmployees();
+
+                updateNextId();
+              });
+            }
+
+            function loadLastPage(){
+              $.get(lastPage, function(values,status){
+
+                nextPage = "";
+                previousPage = values._links.prev.href;
+                selfPage = lastPage;
+
+                data = values._embedded.employees;
+                updatePageNumber(values.page.number);
+                updateEmployees();
+              });
+            }
+
+            function loadNextPage(){
+              $.get(nextPage, function(values,status){
+
+                previousPage = selfPage;
+                selfPage = nextPage;
+                nextPage = values._links.next.href;    
+
+                data = values._embedded.employees;
+                updatePageNumber(values.page.number);
+                updateEmployees();
+              });
+            }
+
+            function loadPreviousPage(){
+              $.get(previousPage, function(values,status){
+
+                nextPage = values._links.next.href;
+                selfPage = previousPage;
+
+                previousPage = values._links.prev.href;
+
+                data = values._embedded.employees;
+                updatePageNumber(values.page.number);
+                updateEmployees();
+              });
+            }
+
+            function updatePageNumber(number){
+              $("#page-counter").text(number+1);
+            }
+
+            var data;
+
             $( window ).on( "load", function() {
-              updateEmployees();
+              loadFirstPage();
             })
 
             function emptyModalInputs(){
