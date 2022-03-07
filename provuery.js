@@ -1,4 +1,4 @@
-/*var data = /*$.ajax(method:"get", http://localhost:8080/swagger-ui.html, dataType:"json")*/[
+/*var data = $.ajax(method:"get", http://localhost:8080/swagger-ui.html, dataType:"json")[
                   {
                     "id": 10001,
                     "birthDate": "1953-09-01",
@@ -51,6 +51,14 @@
               });
             }
 
+            function countProps(obj) {
+              var count = 0;
+              for (var p in obj) {
+                obj.hasOwnProperty(p) && count++;
+              }
+              return count; 
+            }
+
             function updateEmployees() {
             var rows = "";
 
@@ -70,26 +78,53 @@
                 $("#riempi-tab").html(rows);
             }
 
-            function removeEmployee(id){
+            //---------------------------------------------------------------------------------------------------------------------
+            
+            function removeFromTable(id){
               $.each(data, function(key, value){
                 if(value.id == id){
                   data.splice(key, 1);
-                  $("#"+id).closest("tr").remove();
+                  $("#" + id).closest("tr").remove();
                   return;
                 }
-              })
+              });
             }
 
+            function removeEmployee(id){
+              $.ajax({
+                url: "http://localhost:8080/employees/"+id,
+                type: 'DELETE',
+                success: function(result) {
+                    removeFromTable(id);
+                }
+              });
+            }
+
+            //---------------------------------------------------------------------------------------------------------------------
+
             function addEmployee(name, lastname, birth, hiredate, gender){
-              data.push({
+              let payload = ({
                 "id": nextId,
                 "birthDate": birth,
                 "firstName": name,
                 "lastName": lastname,
                 "gender": gender,
                 "hireDate": hiredate,
-              })
+              });
+              saveEmployee(payload);
+              updateEmployees();
+            
               nextId+=1;
+            }
+
+            function saveEmployee(payload){
+              $.ajax({
+                method: "POST",
+                url: "http://localhost:8080/employees",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(payload)
+              });
             }
 
             function saveModalInputs(){
@@ -102,6 +137,8 @@
               );
               updateEmployees();
             }
+
+            //---------------------------------------------------------------------------------------------------------------------
 
             var nextPage;
             var previousPage;
@@ -175,6 +212,8 @@
               loadFirstPage();
             })
 
+            //---------------------------------------------------------------------------------------------------------------------
+
             function emptyModalInputs(){
               $("#name").val("");
               $("#lastname").val("");
@@ -218,6 +257,17 @@
                 newlastname=$("#lastname-"+id).text();
               }
 
+              let tmp = $.ajax({
+                method: "GET",
+                url: "http://localhost:8080/employees/"+id,
+                dataType: "json"
+              });
+              
+                let birthday = tmp.birthdate;
+                let hiredate = tmp.hireDate;
+                let gender = tmp.gender;
+                let links = tmp._links;
+
               $("#name-"+id).text(newname);
               $("#lastname-"+id).text(newlastname);
               changeNames(newname, newlastname, id);
@@ -227,6 +277,28 @@
 
               $("#input-name-"+id).val("");
               $("#input-lastname-"+id).val("");
+
+              let payload = {
+                "id": id,
+                "birthdate": birthday,
+                "firstName": newname,                
+                "lastName": newlastname,                
+                "gender": gender,
+                "hiredate": hiredate,
+                "_links":links
+              };
+              console.log(id);
+              saveChanges(payload, id);
+            }
+
+            function saveChanges(payload, id){
+              $.ajax({
+                method: "PUT",
+                url: "http://localhost:8080/employees/"+id,
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(payload)
+              });
             }
 
             function changeNames(name, lastname, id){
@@ -237,3 +309,16 @@
                 }
               })
             }
+
+            /*function a(id){
+              tmp = $.ajax({
+                method: "GET",
+                url: "http://localhost:8080/employees/"+id,
+                dataType: "json"
+              })
+              $.each(tmp, function (key, value) {
+                birthday = tmp.birthdate;
+                hiredate = tmp.hireDate;
+                gender = tmp.gender;
+              });
+            }*/

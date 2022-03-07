@@ -6,3 +6,8 @@
 .display-none{
   display:none;
 }
+
+.delete-button{
+  background-color:firebrick;
+  border-style:dotted;
+}
